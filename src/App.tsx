@@ -1,25 +1,60 @@
 import React, { useState } from 'react';
 import './App.css';
 
+interface WritingEntry {
+  id: number;
+  title: string;
+  text: string;
+}
+
 function App() {
-  const [title, setTitle] = useState('');
-  const [text, setText] = useState('');
-  const [savedEntries, setSavedEntries] = useState([]);
-  const [aiResult, setAiResult] = useState('');
+  const [title, setTitle] = useState<string>('');
+  const [text, setText] = useState<string>('');
+  const [savedEntries, setSavedEntries] = useState<WritingEntry[]>([]);
+  const [aiResult, setAiResult] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSave = () => {
     if (!title || !text) return;
-    const newEntry = { title, text, id: Date.now() };
+    const newEntry: WritingEntry = { 
+      id: Date.now(),
+      title: title,
+      text: text,
+    };
     setSavedEntries([newEntry, ...savedEntries]);
     setTitle('');
     setText('');
   };
 
+  const handleLoadEntry = (entry: WritingEntry) => {
+    setTitle(entry.title);
+    setText(entry.text);
+    document.querySelector('textarea')?.focus();
+  }
+
   const handleAI = async () => {
-    setAiResult("Waiting for AI response...");
-    setTimeout(() => {
-      setAiResult(`AI Suggestion for "${title}":`);
-    }, 1000);
+    if (!text) return;
+    setIsLoading(true);
+    setAiResult("Awaiting the spark...");
+    try {
+      const response = await fetch('/api/suggestion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, text }),
+      })
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setAiResult(data.suggestion);
+      } else {
+        setAiResult(`Error: ${data.err}`);
+      }
+    } catch (err) {
+      setAiResult("Could not reach the server.")
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -31,7 +66,7 @@ function App() {
       <main className="main-content">
         {/* Form Box */}
         <section className="input-box">
-          <h2>Your Idea</h2>
+          <h2>The Blank Parchment</h2>
           <input 
             className="title-input"
             type="text" 
@@ -46,19 +81,24 @@ function App() {
             onChange={(e) => setText(e.target.value)}
           />
           <div className="button-group">
-            <button className="btn-save" onClick={handleSave}>Save Idea</button>
-            <button className="btn-ai" onClick={handleAI}>AI Suggestion</button>
+            <button className="btn-save" onClick={handleSave}>Capture Thought</button>
+            <button className="btn-ai" onClick={handleAI} disabled={isLoading}>Consult the Quill</button>
           </div>
         </section>
 
         {/* Bank Box */}
         <section className="saved-box">
-          <h2>Saved Ideas</h2>
+          <h2>The Vault</h2>
           <div className="entries-list">
             {savedEntries.map(entry => (
               <article key={entry.id} className="entry-card">
+                <div className='entry-header'>
                 <h3>{entry.title}</h3>
-                <p>{entry.text}</p>
+                  <button className="btn-load" onClick={() => handleLoadEntry(entry)}>
+                    Edit
+                  </button>
+                </div>
+                <p className='entry-preview'>{entry.text}</p>
               </article>
             ))}
           </div>
@@ -67,9 +107,9 @@ function App() {
 
       {/* AI Result */}
       <footer className="ai-footer">
-        <h3>AI Result</h3>
+        <h3>The Gilded Draft</h3>
         <div className="ai-content">
-          {aiResult || "AI suggestions will appear here..."}
+          {aiResult || "A silent quill, waiting for inspiration..."}
         </div>
       </footer>
     </div>
