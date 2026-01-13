@@ -18,7 +18,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // 404 error handler
 app.use((req: Request, res: Response) => {
-  return res.sendStatus(404).send('Page not found.');
+  return res.status(404).send('Page not found.');
 });
 
 // global error handler 500
