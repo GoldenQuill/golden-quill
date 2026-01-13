@@ -1,38 +1,171 @@
-.App {
-  text-align: center;
+/* Golden Quill Theme */
+:root {
+  --ink-black: #1a1a1a;
+  --quill-gold: #d4af37;
+  --gold-hover: #f1c40f;
+  --parchment: #fdfaf0;
+  --border-color: #e2d1a8;
+  --text-dark: #2c2c2c;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background-color: #f4f1ea;
+  margin: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 30px;
+  font-family: 'Georgia', serif;
 }
 
-.App-link {
-  color: #61dafb;
+.app-header h1 {
+  text-align: center;
+  color: var(--ink-black);
+  font-size: 2.5rem;
+  border-bottom: 2px solid var(--quill-gold);
+  display: inline-block;
+  width: 100%;
+  padding-bottom: 10px;
+  letter-spacing: 1px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Layout */
+.main-content {
+  display: flex;
+  gap: 30px;
+}
+
+/* Boxes */
+.input-box, .saved-box {
+  flex: 1;
+  background: var(--parchment);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 25px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.saved-box {
+  overflow-y: auto;
+}
+
+h2 {
+  color: var(--ink-black);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0;
+}
+
+/* Form Elements */
+.title-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 20px;
+  padding: 10px 0;
+  font-size: 1.2rem;
+  font-family: 'Georgia', serif;
+  outline: none;
+}
+
+.title-input:focus {
+  border-bottom: 1px solid var(--quill-gold);
+}
+
+.content-textarea {
+  flex-grow: 1;
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  padding: 15px;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  font-family: 'Georgia', serif;
+  resize: none;
+  outline: none;
+}
+
+.content-textarea:focus {
+  border-color: var(--quill-gold);
+}
+
+/* Buttons */
+.button-group {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+}
+
+button {
+  padding: 12px 24px;
+  font-family: 'Georgia', serif;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.btn-save {
+  background: var(--ink-black);
+  color: var(--quill-gold);
+  border: 1px solid var(--quill-gold);
+}
+
+.btn-save:hover {
+  background: #333;
+}
+
+.btn-ai {
+  background: var(--quill-gold);
+  color: var(--ink-black);
+  border: 1px solid var(--quill-gold);
+}
+
+.btn-ai:hover {
+  background: var(--gold-hover);
+}
+
+/* Saved Entries */
+.entry-card {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.entry-card h3 {
+  margin: 0 0 5px 0;
+  color: var(--text-dark);
+}
+
+.entry-card p {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* AI Suggestion */
+.ai-footer {
+  background: lightgoldenrodyellow;
+  color: var(--parchment);
+  padding: 30px;
+  border-left: 5px solid var(--quill-gold);
+  border-radius: 0;
+}
+
+.ai-footer h3 {
+  color: var(--quill-gold);
+  margin-top: 0;
+}
+
+.ai-content {
+  font-style: italic;
+  line-height: 1.8;
 }
